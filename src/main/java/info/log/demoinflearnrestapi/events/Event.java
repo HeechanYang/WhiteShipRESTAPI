@@ -2,16 +2,19 @@ package info.log.demoinflearnrestapi.events;
 
 import lombok.*;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor @NoArgsConstructor
 @Getter @Setter
 @EqualsAndHashCode(of = "id")
+@Entity
 // @Data를 쓰지 않는 이유
 // EqualsAndHashCode()는 default로 모든 fields를 사용하기 때문에 상호참조 현상이 발생하여 오버플로가 발생할 수 있음
 public class Event {
 
+    @Id @GeneratedValue
     private Integer id;
     private String name;
     private String description;
@@ -25,6 +28,10 @@ public class Event {
     private int limitOfEnrollment;
     private boolean offline;
     private boolean free;
+
+    //Default는 EnumType.ORDINAL
+    // 하지만 이후 Enum의 순서가 변경될 수 있으니 STRING으로 바꿔주자
+    @Enumerated(EnumType.STRING)
     private EventStatus eventStatus;
 
 }
