@@ -28,10 +28,9 @@ public class Event {
     private int limitOfEnrollment;
     private boolean offline;
     private boolean free;
-
     //Default는 EnumType.ORDINAL
     // 하지만 이후 Enum의 순서가 변경될 수 있으니 STRING으로 바꿔주자
     @Enumerated(EnumType.STRING)
-    private EventStatus eventStatus;
+    private EventStatus eventStatus = EventStatus.DRAFT;
 
 }
