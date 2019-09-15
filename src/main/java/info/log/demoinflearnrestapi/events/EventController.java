@@ -31,12 +31,13 @@ public class EventController {
     @PostMapping
     public ResponseEntity createEvent(@RequestBody @Valid EventDto eventDto, Errors errors) {
         if (errors.hasErrors()) {
-            return ResponseEntity.badRequest().build();
+            //Errors는 Java Bean 을 따르지 않기 때문에 ObjectMapper를 이용해서 Serialization할 수 없음
+            return ResponseEntity.badRequest().body(errors);
         }
 
         eventValidator.validate(eventDto, errors);
         if (errors.hasErrors()) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(errors);
         }
         // ModelMapper 사용
         // Reflection을 사용하기 때문에 성능이 안좋아질 수 있음.

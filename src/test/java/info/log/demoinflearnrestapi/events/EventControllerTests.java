@@ -132,10 +132,10 @@ public class EventControllerTests {
         EventDto eventDto = EventDto.builder()
                 .name("Spring")
                 .description("REST API Development with Spring")
-                .beginEnrollmentDateTime(LocalDateTime.of(2019, 9, 1, 23, 56))
-                .closeEnrollmentDateTime(LocalDateTime.of(2019, 9, 2, 21, 56))
-                .beginEventDateTime(LocalDateTime.of(2019, 9, 2, 24, 56))
-                .endEventDateTime(LocalDateTime.of(2019, 9, 2, 23, 56))
+                .beginEnrollmentDateTime(LocalDateTime.of(2019, 9, 3, 23, 56))
+                .closeEnrollmentDateTime(LocalDateTime.of(2019, 9, 5, 21, 56))
+                .beginEventDateTime(LocalDateTime.of(2019, 9, 7, 23, 56))
+                .endEventDateTime(LocalDateTime.of(2019, 9, 5, 23, 56))
                 .basePrice(10000)
                 .maxPrice(200)
                 .limitOfEnrollment(100)
@@ -145,6 +145,12 @@ public class EventControllerTests {
         this.mockMvc.perform(post("/api/events")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(this.objectMapper.writeValueAsString(eventDto)))
+                .andDo(print())
+                .andExpect(jsonPath("$[0].objectName").exists())
+//                .andExpect(jsonPath("$[0].field").exists())
+                .andExpect(jsonPath("$[0].defaultMessage").exists())
+                .andExpect(jsonPath("$[0].code").exists())
+//                .andExpect(jsonPath("$[0].rejectedValue").exists())
                 .andExpect(status().isBadRequest());
     }
 
