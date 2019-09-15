@@ -1,6 +1,7 @@
 package info.log.demoinflearnrestapi.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import info.log.demoinflearnrestapi.common.TestDescription;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,6 +46,7 @@ public class EventControllerTests {
 //    EventRepository eventRepository;
 
     @Test
+    @TestDescription("정상적으로 이벤트를 생성하는 테스트")
     public void createEvent() throws Exception {
         EventDto event = EventDto.builder()
                 .name("Spring")
@@ -52,7 +54,7 @@ public class EventControllerTests {
                 .beginEnrollmentDateTime(LocalDateTime.of(2019, 9, 1, 21, 56))
                 .closeEnrollmentDateTime(LocalDateTime.of(2019, 9, 2, 21, 56))
                 .beginEventDateTime(LocalDateTime.of(2019, 9, 2, 21, 56))
-                .beginEventDateTime(LocalDateTime.of(2019, 9, 2, 21, 56))
+                .endEventDateTime(LocalDateTime.of(2019, 9, 2, 21, 56))
                 .basePrice(100)
                 .maxPrice(200)
                 .limitOfEnrollment(100)
@@ -77,6 +79,7 @@ public class EventControllerTests {
     }
 
     @Test
+    @TestDescription("입력받을 수 없는 값을 사용하는 경우에 에러가 발생하는 테스트")
     public void createEventBadRequest() throws Exception {
         Event event = Event.builder()
                 .id(100)
@@ -106,6 +109,7 @@ public class EventControllerTests {
     }
 
     @Test
+    @TestDescription("입력값이 비어있는 경우에 에러가 발생하는 테스트")
     public void createEventBadRequestEmptyInput() throws Exception {
         EventDto eventDto = EventDto.builder().build();
 
@@ -118,8 +122,25 @@ public class EventControllerTests {
     }
 
     @Test
-    public void createEventBadRequestEmptyInput2() throws Exception {
-        EventDto eventDto = EventDto.builder().build();
+    @TestDescription("입력값이 잘못된 경우에 에러가 발생하는 테스트")
+    public void createEventBadRequestWrongInput() throws Exception {
+        // 틀린 인풋
+        // 시작 시간이 끝나는 시간보다 빠르거나
+        // maxPrice가 200원인데 basePrice가 10000원인 경우
+        // 이런 경우 Annotation으로 검증하기 힘든 경우가 많음
+        // 그래서 Validator를 따로 만들어 줄 것임
+        EventDto eventDto = EventDto.builder()
+                .name("Spring")
+                .description("REST API Development with Spring")
+                .beginEnrollmentDateTime(LocalDateTime.of(2019, 9, 1, 23, 56))
+                .closeEnrollmentDateTime(LocalDateTime.of(2019, 9, 2, 21, 56))
+                .beginEventDateTime(LocalDateTime.of(2019, 9, 2, 24, 56))
+                .endEventDateTime(LocalDateTime.of(2019, 9, 2, 23, 56))
+                .basePrice(10000)
+                .maxPrice(200)
+                .limitOfEnrollment(100)
+                .location("강남역 D2 스타트업 팩토리")
+                .build();
 
         this.mockMvc.perform(post("/api/events")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
