@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 // id, offline, free 등의 필드값을 제외한 값들만 입력받을 수 있게 '입력값 제한'을 하고 싶음
@@ -18,15 +21,24 @@ import java.time.LocalDateTime;
 @Data @AllArgsConstructor
 public class EventDto {
 
+    @NotEmpty
     private String name;
+    @NotEmpty
     private String description;
+    @NotNull
     private LocalDateTime beginEnrollmentDateTime;
+    @NotNull
     private LocalDateTime closeEnrollmentDateTime;
+    @NotNull
     private LocalDateTime beginEventDateTime;
+    @NotNull
     private LocalDateTime endEventDateTime;
     private String location; // (optional) 이게 없으면 온라인 몽미
+    @Min(0)
     private int basePrice; // (optional)
+    @Min(0)
     private int maxPrice; // (optional)
+    @Min(0)
     private int limitOfEnrollment;
 
 }
