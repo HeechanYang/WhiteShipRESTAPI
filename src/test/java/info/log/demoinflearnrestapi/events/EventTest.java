@@ -27,4 +27,60 @@ public class EventTest {
         assertThat(event.getDescription()).isEqualTo(description);
     }
 
+    @Test
+    public void testFree(){
+        // Given
+        Event event = Event.builder()
+                .basePrice(0)
+                .maxPrice(0)
+                .build();
+
+        // When
+        event.update();
+
+        // Then
+        assertThat(event.isFree()).isTrue();
+
+        // Given
+        event = Event.builder()
+                .basePrice(0)
+                .maxPrice(100)
+                .build();
+
+        // When
+        event.update();
+
+        // Then
+        assertThat(event.isFree()).isTrue();
+    }
+
+    @Test
+    public void testOffline(){
+        // Given
+        Event event = Event.builder()
+                .basePrice(0)
+                .maxPrice(100)
+                .build();
+
+        // When
+        event.update();
+
+        // Then
+        assertThat(event.isOffline()).isFalse();
+
+        // Given
+        event = Event.builder()
+                .basePrice(0)
+                .maxPrice(100)
+                .location("서울과학기술대학교 미래관 313호")
+                .build();
+
+        // When
+        event.update();
+
+        // Then
+        assertThat(event.isOffline()).isTrue();
+
+    }
+
 }

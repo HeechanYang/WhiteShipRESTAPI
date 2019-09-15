@@ -58,7 +58,7 @@ public class EventControllerTests {
                 .basePrice(100)
                 .maxPrice(200)
                 .limitOfEnrollment(100)
-                .location("강남역 D2 스타트업 팩토리")
+//                .location("강남역 D2 스타트업 팩토리")
                 .build();
 
 //        Mockito.when(eventRepository.save(event)).thenReturn(event);
@@ -73,8 +73,8 @@ public class EventControllerTests {
                 .andExpect(header().exists("Location"))
                 .andExpect(header().exists(HttpHeaders.LOCATION))
                 .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("id").value(Matchers.not(100)))
-                .andExpect(jsonPath("free").value(Matchers.not(true)))
+                .andExpect(jsonPath("free").value(false))
+                .andExpect(jsonPath("offline").value(true))
                 .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()));
     }
 
